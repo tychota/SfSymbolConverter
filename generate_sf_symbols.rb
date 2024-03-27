@@ -98,3 +98,29 @@ left_margin_node["x2"] = adjusted_left_margin.to_s
 right_margin_node = template_svg.at_css("#right-margin-Regular-M")
 right_margin_node["x1"] = adjusted_right_margin.to_s
 right_margin_node["x2"] = adjusted_right_margin.to_s
+
+# Make a copy of the modified template.
+# In this script we generate only one symbol, but if we end up generating multiple symbols at one it's safer to work on a copy.
+symbol_svg = template_svg.dup
+
+# It's finally time to handle that important #Regular-M node.
+regular_m_node = symbol_svg.at_css("#Regular-M")
+
+# Move the shape so its center is at the center of the guides.
+translation_x = horizontal_center - scaled_width / 2
+translation_y = (baseline_y + capline_y) / 2 - scaled_height / 2
+# Prepare a transformation matrix from the values calculated above.
+transform_matrix = [
+  scale_m, 0,
+  0, scale_m,
+  translation_x, translation_y,
+].map {|x| "%f" % x } # Convert numbers to strings.
+regular_m_node["transform"] = "matrix(#{transform_matrix.join(" ")})"
+
+# Replace the content of the #Regular-M node with the icon.
+regular_m_node.children = icon_svg.root.children.dup
+
+# Finish by writing the generated symbol to disk.
+File.open(DESTINATION_SVG_PATH, "w") do |f|
+  symbol_svg.write_to(f)
+end
