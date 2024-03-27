@@ -75,3 +75,26 @@ icon_svg.root["height"] != ICON_HEIGHT.to_s ||
 icon_svg.root["viewBox"] != "0 0 #{ICON_WIDTH} #{ICON_HEIGHT}"
 raise "expected icon size of #{icon.source_svg_path} to be (#{ICON_WIDTH}, #{ICON_HEIGHT})"
 end
+
+
+# Original scale calculation from the article
+# scale = ((baseline_y - capline_y).abs / ICON_HEIGHT) * ADDITIONAL_SCALING
+
+# We want the m scaled icon to be correlated with the font of size 14.
+scale_m = (baseline_y - capline_y).abs / 14
+horizontal_center = (original_left_margin + original_right_margin) / 2
+
+scaled_width = ICON_WIDTH * scale_m
+scaled_height = ICON_HEIGHT * scale_m
+
+# If you use the template's margins as-is, the generated symbol's width will depend on the template chosen.
+# To not have to care about the template, we move the margin based on the computed symbol size.
+horizontal_margin_to_center = scaled_width / 2 + MARGIN_LINE_WIDTH + ADDITIONAL_HORIZONTAL_MARGIN
+adjusted_left_margin = horizontal_center - horizontal_margin_to_center
+adjusted_right_margin = horizontal_center + horizontal_margin_to_center
+left_margin_node = template_svg.at_css("#left-margin-Regular-M")
+left_margin_node["x1"] = adjusted_left_margin.to_s
+left_margin_node["x2"] = adjusted_left_margin.to_s
+right_margin_node = template_svg.at_css("#right-margin-Regular-M")
+right_margin_node["x1"] = adjusted_right_margin.to_s
+right_margin_node["x2"] = adjusted_right_margin.to_s
