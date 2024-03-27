@@ -14,6 +14,7 @@ GEM
     nokogiri (1.16.3-x86_64-linux)
       racc (~> 1.4)
     racc (1.7.3)
+    rufo (0.17.1)
 
 PLATFORMS
   aarch64-linux
@@ -25,6 +26,7 @@ PLATFORMS
 
 DEPENDENCIES
   nokogiri
+  rufo
 
 BUNDLED WITH
    2.5.7
