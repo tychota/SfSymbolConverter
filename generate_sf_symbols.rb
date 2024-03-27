@@ -40,3 +40,23 @@ TEMPLATE_ICON_SIZES.each do |size|
     end
   end
 end
+
+def get_guide_value(template_svg, axis, xml_id)
+  guide_node = template_svg.at_css("##{xml_id}")
+  raise "invalid axis" unless %i{x y}.include?(axis)
+  val1 = guide_node["#{axis}1"]
+  val2 = guide_node["#{axis}2"]
+  if val1 == nil || val1 != val2
+    raise "invalid #{xml_id} guide"
+  end
+  val1.to_f # Convert the value from string to float.
+end
+
+# Get the x1 (should be the same as x2) of the #left-margin node.
+original_left_margin = get_guide_value(template_svg, :x, "left-margin-Regular-M")
+# Get the x1 (should be the same as x2) of the #right-margin node.
+original_right_margin = get_guide_value(template_svg, :x, "right-margin-Regular-M")
+# Get the y1 (should be the same as y2) of the #Baseline-M node.
+baseline_y = get_guide_value(template_svg, :y, "Baseline-M")
+# Get the y1 (should be the same as y2) of the #Capline-M node.
+capline_y = get_guide_value(template_svg, :y, "Capline-M")
