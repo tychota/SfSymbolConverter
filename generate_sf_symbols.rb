@@ -60,3 +60,18 @@ original_right_margin = get_guide_value(template_svg, :x, "right-margin-Regular-
 baseline_y = get_guide_value(template_svg, :y, "Baseline-M")
 # Get the y1 (should be the same as y2) of the #Capline-M node.
 capline_y = get_guide_value(template_svg, :y, "Capline-M")
+
+# Load the SVG icon.
+icon_svg = File.open(SOURCE_SVG_PATH) do |f|
+  # To generate a better looking SVG, ignore whitespaces.
+Nokogiri::XML(f) { |config| config.noblanks }
+end
+
+# The SVGs provided by designers had a fixed size of 24x24, so all the calculations below are based on this.
+# If we get an unexpected size, the program ends in error.
+# The SVG specs allows to specify width and height in not only numbers, but also percents, so handling a wider range of SVG files would be more complicated.
+if icon_svg.root["width"] != ICON_WIDTH.to_s ||
+icon_svg.root["height"] != ICON_HEIGHT.to_s ||
+icon_svg.root["viewBox"] != "0 0 #{ICON_WIDTH} #{ICON_HEIGHT}"
+raise "expected icon size of #{icon.source_svg_path} to be (#{ICON_WIDTH}, #{ICON_HEIGHT})"
+end
