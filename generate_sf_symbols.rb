@@ -26,3 +26,17 @@ template_svg = File.open(TEMPLATE_PATH) do |f|
   # To generate a better looking SVG, ignore whitespaces.
   Nokogiri::XML(f) { |config| config.noblanks }
 end
+
+TEMPLATE_ICON_SIZES = ["S", "M", "L"]
+TEMPLATE_ICON_WEIGHTS = ["Black", "Heavy", "Bold", "Semibold", "Medium", "Regular", "Light", "Thin", "Ultralight"]
+
+# We are only providing "Regular-S", so remove the other shapes.
+TEMPLATE_ICON_SIZES.each do |size|
+  TEMPLATE_ICON_WEIGHTS.each do |weight|
+    id = "#{weight}-#{size}"
+    next if id == "Regular-M" # TODO: Only keep the S size
+    if template_svg.at_css("##{id}") != nil then
+      template_svg.at_css("##{id}").remove
+    end
+  end
+end
