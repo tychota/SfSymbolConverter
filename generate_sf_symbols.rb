@@ -21,3 +21,8 @@ MARGIN_LINE_WIDTH = 0.5
 # Additional white space added on each side
 ADDITIONAL_HORIZONTAL_MARGIN = 4
 
+# Load the template.
+template_svg = File.open(TEMPLATE_PATH) do |f|
+  # To generate a better looking SVG, ignore whitespaces.
+  Nokogiri::XML(f) { |config| config.noblanks }
+end
