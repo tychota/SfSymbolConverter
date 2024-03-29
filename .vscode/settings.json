@@ -1,0 +1,6 @@
+{
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "prettier.enable": false,
+    "rubyLsp.formatter": "rubocop"
+}
