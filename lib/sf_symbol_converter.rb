@@ -38,6 +38,8 @@ class SFSymbolConverter
     icon_svg.root['viewBox'] != "0 0 #{ICON_WIDTH} #{ICON_HEIGHT}"
   end
 
+  # TODO: extract the validate icon into an icon validator
+
   def validate_icon
     unless icon_dimension_valid?
       raise "expected icon size to be (#{SOURCE_ICON_VIEWBOX_SIZE}, #{SOURCE_ICON_VIEWBOX_SIZE})"
@@ -46,6 +48,8 @@ class SFSymbolConverter
 
     raise "expected icon viewbox to be (0, 0, #{SOURCE_ICON_VIEWBOX_SIZE}, #{SOURCE_ICON_VIEWBOX_SIZE})"
   end
+
+  # TODO: extract the validate template into an icon validator
 
   def validate_template
     validate_required_sections
