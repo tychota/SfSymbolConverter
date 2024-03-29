@@ -82,7 +82,6 @@ icon_svg.root["viewBox"] != "0 0 #{ICON_WIDTH} #{ICON_HEIGHT}"
 raise "expected icon size of #{icon.source_svg_path} to be (#{ICON_WIDTH}, #{ICON_HEIGHT})"
 end
 
-
 # Original scale calculation from the article
 # scale = ((baseline_y - capline_y).abs / ICON_HEIGHT) * ADDITIONAL_SCALING
 
@@ -92,6 +91,37 @@ horizontal_center = (original_left_margin + original_right_margin) / 2
 
 scaled_width = ICON_WIDTH * scale_s
 scaled_height = ICON_HEIGHT * scale_s
+
+
+def scale_and_adjust_margin(icon_width, icon_height, scale_factor, template_svg, weight, size)
+  scaled_width = icon_width * scale_factor
+  scaled_height = icon_height * scale_factor
+
+  # Calculate new margins to maintain the original 24/16 ratio
+  total_width_with_margins = scaled_width * (24.0 / 16.0)
+  new_margin = (total_width_with_margins - scaled_width) / 2
+
+  horizontal_center = (original_left_margin + original_right_margin) / 2
+  adjusted_left_margin = horizontal_center - new_margin - (MARGIN_LINE_WIDTH / 2)
+  adjusted_right_margin = horizontal_center + new_margin + (MARGIN_LINE_WIDTH / 2)
+
+  # Apply adjustments to the template
+  ["left", "right"].each do |side|
+    margin_node = template_svg.at_css("##{side}-margin-#{weight}-#{size}")
+    margin_node["x1"] = adjusted_left_margin.to_s if side == "left" 
+    margin_node["x2"] = adjusted_led_margin.to_s if side == "right"
+  end
+
+  # Scale and position the icon
+  translation_x = horizontal_center - scaled_width / 2
+  translation_y = (baseline_y + capline_y) / 2 - scaled_height / 2
+  transform_matrix = [
+    scale_factor, 0, 0, scale_factor, translation_x, translation_y
+  ].map { |x| "%f" % x }.join(" ")
+  
+  weight_size_node = template_svg.at_css("##{weight}-#{size}")
+  weight_size_node["transform"] = "matrix(#{transform_matrix})"
+end
 
 # If you use the template's margins as-is, the generated symbol's width will depend on the template chosen.
 # To not have to care about the template, we move the margin based on the computed symbol size.
