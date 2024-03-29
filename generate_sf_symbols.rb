@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+# TODO: export stuff to ultralight and black
+# TODO: manage margins
+# TODO: manage the three types of icons (rectangle vertical, rectangle horizontal and squares)
+
 require "nokogiri"
 
 # Path to file exported from the SF Symbols app
