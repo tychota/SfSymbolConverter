@@ -1,12 +1,15 @@
-require "nokogiri"
+# frozen_string_literal: true
 
+require 'nokogiri'
+
+# Given a source SVG and a SFSymbol template, generate a SFSymbol
 class SFSymbolConverter
   SOURCE_ICON_VIEWBOX_SIZE = 24
 
   REFERENCE_SFSYMBOL_FONT_CAPS_HEIGHT = 14
   TARGET_SYMBOL_HEIGHT_MEDIUM = 16
 
-  MEDIUM_TO_SMALL_SCALE = 0.783
+  SFSYMBOL_MEDIUM_TO_SMALL_SCALE = 0.783
 
   def initialize(template_svg, icon_svg)
     @template_svg = template_svg
@@ -28,20 +31,20 @@ class SFSymbolConverter
     unless icon_dimension_valid?
       raise "expected icon size to be (#{SOURCE_ICON_VIEWBOX_SIZE}, #{SOURCE_ICON_VIEWBOX_SIZE})"
     end
-    unless icon_viewbox_valid?
-      raise "expected icon viewbox to be (0, 0, #{SOURCE_ICON_VIEWBOX_SIZE}, #{SOURCE_ICON_VIEWBOX_SIZE})"
-    end
+    return if icon_viewbox_valid?
+
+    raise "expected icon viewbox to be (0, 0, #{SOURCE_ICON_VIEWBOX_SIZE}, #{SOURCE_ICON_VIEWBOX_SIZE})"
   end
 
   def icon_dimension_valid?
-    width = icon_svg.root["width"] != SOURCE_ICON_VIEWBOX_SIZE.to_s
-    height = icon_svg.root["height"] != SOURCE_ICON_VIEWBOX_SIZE.to_s
+    width = icon_svg.root['width'] != SOURCE_ICON_VIEWBOX_SIZE.to_s
+    height = icon_svg.root['height'] != SOURCE_ICON_VIEWBOX_SIZE.to_s
 
     width && height
   end
 
   def icon_viewbox_valid?
-    icon_svg.root["viewBox"] != "0 0 #{ICON_WIDTH} #{ICON_HEIGHT}"
+    icon_svg.root['viewBox'] != "0 0 #{ICON_WIDTH} #{ICON_HEIGHT}"
   end
 
   def validate_template
