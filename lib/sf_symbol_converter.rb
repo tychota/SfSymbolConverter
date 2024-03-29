@@ -27,7 +27,6 @@ class SFSymbolConverter
 
   private
 
-
   def icon_dimension_valid?
     width = icon_svg.root['width'] != SOURCE_ICON_VIEWBOX_SIZE.to_s
     height = icon_svg.root['height'] != SOURCE_ICON_VIEWBOX_SIZE.to_s
@@ -49,36 +48,58 @@ class SFSymbolConverter
   end
 
   def validate_template
-    required_sections = %w[Notes Symbols Guides]
-    required_sections.each do |section_id|
-      raise "Invalid template: Missing required section #{section_id}" unless root.at_css("g##{section_id}")
-    end
+    validate_required_sections
+    validate_required_symbols
+    validate_guidelines
+    validate_margin_lines
+  end
 
-    # Check for specific symbols: Ultralight-S, Regular-S, Black-S
-    required_symbols = %w[Ultralight-S Regular-S Black-S]
+  REQUIRED_SECTIONS = %w[Notes Symbols Guides].freeze
+
+  def validate_required_sections
+    REQUIRED_SECTIONS.each do |section_id|
+      validate_presence("g##{section_id}", "Invalid template: Missing required section #{section_id}")
+    end
+  end
+
+  REQUIRED_SYMBOLS = %w[Ultralight-S Regular-S Black-S].freeze
+
+  def validate_required_symbols
     symbols_section = root.at_css('g#Symbols')
-    required_symbols.each do |symbol_id|
-      raise "Invalid template: Missing symbol #{symbol_id}" unless symbols_section.at_css("g##{symbol_id}")
+    REQUIRED_SYMBOLS.each do |symbol_id|
+      validate_presence_within(symbols_section, "g##{symbol_id}", "Invalid template: Missing symbol #{symbol_id}")
     end
+  end
 
-    # Check for all Guidelines (Baseline_X, CapLine_X) and margin lines
-    scales = %w[S M L]
-    scales.each do |scale|
-      %w[Baseline Capline].each do |line_type|
-        raise "Invalid template: Missing #{line_type}-#{scale}" unless root.at_css("line##{line_type}-#{scale}")
+  SCALES = %w[S M L].freeze
+  LINE_TYPES = %w[Baseline Capline].freeze
+
+  def validate_guidelines
+    SCALES.each do |scale|
+      LINE_TYPES.each do |line_type|
+        validate_presence("line##{line_type}-#{scale}", "Invalid template: Missing #{line_type}-#{scale}")
       end
     end
+  end
 
-    # Check for margin lines
-    weights = %w[Ultralight Regular Black]
-    weights.each do |weight|
-      scales.each do |scale|
-        %w[left-margin right-margin].each do |margin_type|
-          full_margin_id = "#{margin_type}-#{weight}-#{scale}"
-          raise "Invalid template: Missing #{full_margin_id}" unless root.at_css("line##{full_margin_id}")
-        end
+  WEIGHTS = %w[Ultralight Regular Black].freeze
+  MARGIN_TYPES = %w[left-margin right-margin].freeze
+
+  def validate_margin_lines
+    WEIGHTS.product(SCALES).each do |weight, scale|
+      MARGIN_TYPES.each do |margin_type|
+        full_margin_id = "#{margin_type}-#{weight}-#{scale}"
+        validate_presence("line##{full_margin_id}", "Invalid template: Missing #{full_margin_id}")
       end
     end
+  end
+
+  def validate_presence(selector, error_message)
+    raise error_message unless root.at_css(selector)
+  end
+
+  def validate_presence_within(parent, selector, error_message)
+    raise error_message unless parent.at_css(selector)
   end
 
   def trim_template
