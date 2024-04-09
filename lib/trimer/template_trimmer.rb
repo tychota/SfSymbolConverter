@@ -27,4 +27,5 @@ class TemplateTrimmer
   end
 
   # TODO: should we also clean up margin lines ?
+  # ... But it is complicated as the static version provides only M margin (and not S like the variable version)
 end
