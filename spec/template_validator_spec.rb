@@ -3,8 +3,8 @@
 require 'nokogiri'
 require './lib/validators/template_validator'
 
-describe TemplateValidator do
-  describe '#validate' do
+describe TemplateValidator do # rubocop:disable Metrics/BlockLength
+  describe '#validate' do # rubocop:disable Metrics/BlockLength
     it 'validates the template' do
       template_svg = Nokogiri::XML(File.open('spec/fixtures/template.svg'))
       template_validator = TemplateValidator.new
