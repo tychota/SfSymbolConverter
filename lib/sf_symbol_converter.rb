@@ -11,12 +11,15 @@ class SFSymbolConverter
 
   SFSYMBOL_MEDIUM_TO_SMALL_SCALE = 0.783
 
+  attr_reader :template_svg, :icon_svg, :icon_validator, :template_validator
+
   def initialize(template_svg, icon_svg)
     @template_svg = template_svg
     @icon_svg = icon_svg
 
-    validate_icon
-    validate_template
+    @icon_validator = IconValidator.new(SOURCE_ICON_VIEWBOX_SIZE)
+
+    @icon_validator.validate(icon_svg)
   end
 
   def convert
@@ -26,28 +29,6 @@ class SFSymbolConverter
   end
 
   private
-
-  def icon_dimension_valid?
-    width = icon_svg.root['width'] != SOURCE_ICON_VIEWBOX_SIZE.to_s
-    height = icon_svg.root['height'] != SOURCE_ICON_VIEWBOX_SIZE.to_s
-
-    width && height
-  end
-
-  def icon_viewbox_valid?
-    icon_svg.root['viewBox'] != "0 0 #{ICON_WIDTH} #{ICON_HEIGHT}"
-  end
-
-  # TODO: extract the validate icon into an icon validator
-
-  def validate_icon
-    unless icon_dimension_valid?
-      raise "expected icon size to be (#{SOURCE_ICON_VIEWBOX_SIZE}, #{SOURCE_ICON_VIEWBOX_SIZE})"
-    end
-    return if icon_viewbox_valid?
-
-    raise "expected icon viewbox to be (0, 0, #{SOURCE_ICON_VIEWBOX_SIZE}, #{SOURCE_ICON_VIEWBOX_SIZE})"
-  end
 
   # TODO: extract the validate template into an icon validator
 
