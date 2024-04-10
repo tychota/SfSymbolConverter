@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-require './lib/utils'
 
+require './lib/utils/get_guide_value'
 require './lib/validators/icon_validator'
 require './lib/validators/template_validator'
 require './lib/trimmer/template_trimmer'
