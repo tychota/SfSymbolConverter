@@ -3,6 +3,10 @@
 require 'nokogiri'
 require './lib/utils'
 
+require './lib/validators/icon_validator'
+require './lib/validators/template_validator'
+require './lib/trimmer/template_trimmer'
+
 # Given a source SVG and a SFSymbol template, generate a SFSymbol
 class SFSymbolConverter
   SOURCE_ICON_VIEWBOX_SIZE = 24
