@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 # frozen_string_literal: true
 
-require './lib/cli/sf_symbol_converter'
+require './lib/sf_symbol_converter/cli/sf_symbol_converter'
 
 SFSymbolCli.start(ARGV)

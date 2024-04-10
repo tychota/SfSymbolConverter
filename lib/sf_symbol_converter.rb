@@ -2,10 +2,10 @@
 
 require 'nokogiri'
 
-require './lib/utils/get_guide_value'
-require './lib/validators/icon_validator'
-require './lib/validators/template_validator'
-require './lib/trimmer/template_trimmer'
+require './lib/sf_symbol_converter/utils/get_guide_value'
+require './lib/sf_symbol_converter/validators/icon_validator'
+require './lib/sf_symbol_converter/validators/template_validator'
+require './lib/sf_symbol_converter/trimmer/template_trimmer'
 
 # Given a source SVG and a SFSymbol template, generate a SFSymbol
 class SFSymbolConverter

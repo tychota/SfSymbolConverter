@@ -2,7 +2,7 @@
 
 require 'nokogiri'
 
-require './lib/trimmer/template_trimmer'
+require './lib/sf_symbol_converter/trimmer/template_trimmer'
 
 describe TemplateTrimmer do
   it '#remove_unused_template_icons' do

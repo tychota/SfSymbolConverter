@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-require './lib/validators/icon_validator'
+require './lib/sf_symbol_converter/validators/icon_validator'
 
 describe IconValidator do
   describe '#validate' do

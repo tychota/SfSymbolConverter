@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-require './lib/validators/template_validator'
+require './lib/sf_symbol_converter/validators/template_validator'
 
 describe TemplateValidator do # rubocop:disable Metrics/BlockLength
   describe '#validate' do # rubocop:disable Metrics/BlockLength
