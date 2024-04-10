@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require './lib/trimer/template_trimmer'
 require 'nokogiri'
+
+require './lib/trimmer/template_trimmer'
 
 describe TemplateTrimmer do
   it '#remove_unused_template_icons' do
