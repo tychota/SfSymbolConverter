@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-
-require './lib/sf_symbol_converter/trimmer/template_trimmer'
+require 'sf_symbol_converter'
 
 describe TemplateTrimmer do
   it '#remove_unused_template_icons' do

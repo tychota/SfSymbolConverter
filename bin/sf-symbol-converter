@@ -1,6 +1,9 @@
 #! /usr/bin/env ruby
 # frozen_string_literal: true
 
-require './lib/sf_symbol_converter/cli/sf_symbol_converter'
+# Add the lib directory to the load path
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'sf_symbol_converter'
 
 SFSymbolCli.start(ARGV)

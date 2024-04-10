@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/tychota/SfSymbolExporter'
   s.license     = 'MIT'
 
-  s.files       = Dir["lib/**/*.rb"] + Dir["bin/*"] + Dir["assets/*"]
+  s.files       = Dir["lib/*"] + Dir["bin/*"] + Dir["assets/*"] + Dir['lib/**/*.rb'] + ['LICENSE', 'README.md']
   s.bindir      = 'bin'
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths = ["lib"]
