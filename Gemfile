@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'nokogiri'
-gem 'rspec'
+gem 'thor'
 
+gem 'rspec'
 gem 'rubocop'
